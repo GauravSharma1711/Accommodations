@@ -1,5 +1,4 @@
 
-import { body } from "express-validator";
 import Mailgen from "mailgen";
 import nodemailer from 'nodemailer'
 
