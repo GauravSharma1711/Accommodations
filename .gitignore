@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# Build output
+dist/
+build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Coverage directory
+coverage/
+
+# React specific
+*.tsbuildinfo
+public/static/
+*.cache
+
+# Optional: backend stuff
+backend/node_modules/
+backend/.env
+
+# Git files
+.git/

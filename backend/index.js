@@ -1,0 +1,44 @@
+
+import express, { urlencoded } from 'express'
+import cors from 'cors'
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv'
+dotenv.config();
+
+//routes
+import authRoutes from './routes/auth.routes.js'
+import  healthRoute  from './routes/healthcheck.route.js';
+
+
+import connectDB from './db/db.js';
+
+const app = express();
+
+const PORT = process.env.PORT;
+
+
+
+app.use(cors({
+    origin:"http://localhost:5173"
+}))
+app.use(cookieParser());
+app.use(express.json());
+app.use(urlencoded({extended:true}))
+
+
+
+app.use('/api/v1/auth',authRoutes);
+app.use('/api/v1/health',healthRoute);
+
+
+
+
+app.listen(PORT,()=>{
+    connectDB();
+    console.log(`server listning at ${PORT}`);
+    
+})
+
+
+
+
