@@ -55,7 +55,7 @@ export const login = async(req,res)=>{
      }
      
      const isMatch = await user.isPasswordCorrect(password);
-     
+
      if(!isMatch){
       throw new ApiError(403,"unauthorized");
      }
@@ -87,5 +87,24 @@ export const login = async(req,res)=>{
    throw new ApiError(500,"error logging user")
  }
 
+
+}
+
+export const logout = async(req,res)=>{
+   try {
+      res.clearCookie("jwt", {
+         httpOnly: true,
+         sameSite: "Strict",
+         secure: process.env.NODE_ENV !== "development" // fixed spelling
+       });
+       
+       return res.status(200).json(
+         new ApiResponse(200,{message:"logged out successfull"})
+       )
+
+   } catch (error) {
+      console.log("error in logout controller",error)
+      throw new ApiError(500,"error loggin out user");
+   }
 
 }
