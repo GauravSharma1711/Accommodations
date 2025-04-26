@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
+import { type } from "os";
 
 const userSchema = new mongoose.Schema({
 
@@ -22,6 +23,10 @@ const userSchema = new mongoose.Schema({
        password:{
           type:String,
           required:true,
+         },
+
+         avatar:{
+        type:String
          },
 
          isEmailVerified:{

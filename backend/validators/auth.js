@@ -12,7 +12,7 @@ const userRegistrationValidator = ()=>{
         .trim()
         .notEmpty().withMessage("username is required")
         .isLength({min:3}).withMessage(" min length should be 3")
-        .isLength({max:3}).withMessage(" max length should be 13"),
+        .isLength({max:13}).withMessage(" max length should be 13"),
 
     
         body("password")
