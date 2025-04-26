@@ -42,7 +42,35 @@ export const getUser = async(req,res)=>{
    }
 }
 
-export const updateUser = ()=>{
+export const updateUser = async(req,res)=>{
+
+    const {username} = req.body
+
+    const id = req.params.id;
+    const loggedInUserId = req.user.id
+
+          try {
+    
+        if(id.toString() !== loggedInUserId.toString()){
+            throw new ApiError(403,"not authorized to update user")
+        }
+    
+const user  = await User.findById(id);
+user.username=username;
+await user.save();
+        
+return res.status(200).json(
+    new ApiResponse(200,{message:"user updated successfully",data:user}))
+
+
+} catch (error) {
+    console.log("error in updateUser controller",error);
+    throw new ApiError(403,"cannot update user")
+
+}
+
+
+
 
 }
 
