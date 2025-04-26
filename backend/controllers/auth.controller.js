@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs";
-import User from "../models/auth.model.js";
+
+import User from "../models/user.model.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import jwt from "jsonwebtoken";
