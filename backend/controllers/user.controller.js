@@ -44,35 +44,46 @@ export const getUser = async(req,res)=>{
 
 export const updateUser = async(req,res)=>{
 
-    const {username} = req.body
+    const {username,email,password} = req.body
 
     const id = req.params.id;
     const loggedInUserId = req.user.id
 
           try {
+let hashedPassword  = null;
+            if(password){
+hashedPassword = await bcrypt.hash(password,10)
+            }
+
     
         if(id.toString() !== loggedInUserId.toString()){
             throw new ApiError(403,"not authorized to update user")
         }
     
-const user  = await User.findById(id);
-user.username=username;
-await user.save();
+const result = await User.findByIdAndUpdate(
+    id,
+    {
+        username,
+        email,
+        password:hashedPassword || undefined
+    },
+    {  new:true
+ }
+)
+
+if (!result) {
+    throw new ApiError(404, "User not found");
+  }
         
 return res.status(200).json(
-    new ApiResponse(200,{message:"user updated successfully",data:user}))
+    new ApiResponse(200,{message:"user updated successfully",data:result}))
 
 
 } catch (error) {
     console.log("error in updateUser controller",error);
     throw new ApiError(403,"cannot update user")
 
-}
-
-
-
-
-}
+}}
 
 export const deleteUser = async(req,res)=>{
 
