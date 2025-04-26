@@ -24,8 +24,22 @@ export const getUsers = async(req,res)=>{
 }
 
 
-export const getUser = ()=>{
+export const getUser = async(req,res)=>{
+   try {
+    const userId = req.params.id;
 
+    const user = await User.findById(userId);
+    if(!user){
+        throw new ApiError(404,"user with id not found")
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200,{message:"user found successfully",data:user})
+    )
+   } catch (error) {
+    console.log("error in getUserById controller",error);
+    throw new ApiError(500,"error in getting userById")
+   }
 }
 
 export const updateUser = ()=>{
