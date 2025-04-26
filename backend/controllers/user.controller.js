@@ -46,6 +46,26 @@ export const updateUser = ()=>{
 
 }
 
-export const deleteUser = ()=>{
+export const deleteUser = async(req,res)=>{
+
+    try {
+        const userId = req.params.id;
+      
+        const deletedUser = await User.findOneAndDelete({ _id: userId });
+
+
+        if(deletedUser){
+            return res.status(200).json(
+                new ApiResponse(200,{message:"user deleted successfully",deletedUser})
+            )
+        }else{
+            throw new ApiError(404,"user not found")
+        }
+   } catch (error) {
+    console.log("error in deleteUser controller",error);
+    throw new ApiError(404,"user deletion byId failed")
+   }
+
+
 
 }
