@@ -54,7 +54,8 @@ export const login = async(req,res)=>{
         throw new ApiError(404,"user not found")
      }
      
-     const isMatch = await user.isPasswordCorrect(password);
+    //  const isMatch = await user.isPasswordCorrect(password);
+    const isMatch = await bcrypt.compare(password,user.password);
 
      if(!isMatch){
       throw new ApiError(403,"unauthorized");
