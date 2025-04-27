@@ -112,6 +112,29 @@ export const updatePost = async(req,res)=>{
 
 }
 
-export const deletePost = async(req,res)=>{
+export const deletePost = async (req, res) => {
+    try {
+      const postId = req.params.id;
+  
     
-}
+  
+      const deletedPost = await Post.findByIdAndDelete(postId);
+      
+      if (deletedPost) {
+        return res.status(200).json(
+          new ApiResponse(200, { message: 'Post deleted successfully' }, deletedPost)
+        );
+      } else {
+        return res.status(404).json({
+          error: 'Post not found',
+        });
+      }
+    } catch (error) {
+      console.log('Error in deletePost controller', error);
+      return res.status(500).json({
+        error: 'Error deleting post',
+        details: error.message,
+      });
+    }
+  };
+  
