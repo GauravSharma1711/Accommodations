@@ -146,3 +146,27 @@ await Post.findByIdAndUpdate(postId,{$push:{savedPosts:newSavedPost._id}} , { ne
             return res.status(500,"error in savePost controller",error);
         }
 }
+
+export const profilePost = async(req,res)=>{
+
+    const userId = req.params.id;
+
+    try {
+        const user = await User.findById(userId).populate('posts');
+        if(!user){
+            throw new ApiError(404,"Usser not found")
+        }
+      
+        if (!user.posts || user.posts.length === 0) {
+            throw new ApiError(404, "No posts found for this user");
+        }
+
+        return res.status(200).json(
+            new ApiResponse(200,{posts:user.posts})
+        )
+    } catch (error) {
+        console.log("error in get profilePosts controller",error);
+        throw new ApiError(500,"posts not found",error);
+    }
+
+}
