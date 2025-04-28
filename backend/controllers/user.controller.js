@@ -1,6 +1,8 @@
-import User from "../models/user.model.js"
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
+import User from "../models/user.model.js"
+import Post from "../models/post.model.js";
+import SavedPost from "../models/savedPost.model.js";
 
 export const getUsers = async(req,res)=>{
     
@@ -107,4 +109,40 @@ export const deleteUser = async(req,res)=>{
 
 
 
+}
+
+export const savePost = async(req,res)=>{
+    
+        const {postId} = req.body;
+        const userId = req.user.id;
+
+        try {
+            const savedPost = await SavedPost.findOne({
+                savedBy: userId, createdBy: postId 
+            })
+
+            if(savedPost){
+await SavedPost.findByIdAndDelete(savedPost._id);
+await User.findByIdAndUpdate(userId,{$pull:{savedPosts:savedPost._id}} , { new: true })
+await Post.findByIdAndUpdate(postId,{$pull:{savedPosts:savedPost._id}} , { new: true})
+              return res.status(200).json(
+                new ApiResponse(200,{message:"post deleted successfully"})
+              )
+            }
+
+            const newSavedPost = await SavedPost.create({
+                savedBy: userId,
+                createdBy: postId,
+              });
+
+    await User.findByIdAndUpdate(userId,{$push:{savedPosts:newSavedPost._id}} , { new: true })
+await Post.findByIdAndUpdate(postId,{$push:{savedPosts:newSavedPost._id}} , { new: true})
+
+             return res.status(201).json(new ApiResponse(200,{ message: 'Post saved successfully', savedPost: newSavedPost }));
+
+
+        } catch (error) {
+            console.log("Error in savePost controller",error);
+            return res.status(500,"error in savePost controller",error);
+        }
 }

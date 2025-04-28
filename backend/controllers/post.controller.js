@@ -1,9 +1,10 @@
 import User from "../models/user.model.js"
 import Post from "../models/post.model.js"
+import SavedPost from '../models/savedPost.model.js'
 import PostDetail from "../models/postdetails.model.js"
 import {ApiError} from '../utils/api-error.js'
 import {ApiResponse} from '../utils/api-response.js'
-
+import jwt from 'jsonwebtoken'
 
 export const getPosts = async(req,res)=>{
 
@@ -35,8 +36,32 @@ export const getPostById = async(req,res)=>{
             throw new ApiError(404," post not found")
         }
 
+        let userId=nul;
+      const token = req.cookies?.token;
+      if(token){
+        try {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET);
+          userId = decoded?.id || null;
+        } catch (error) {
+          userId = null; 
+        }
+      }
+
+      let isSaved = false;
+
+      if (userId) {
+        const saved = await SavedPost.findOne({
+          savedBy: userId,
+          createdBy: postId,
+        });
+  
+        if (saved) {
+          isSaved = true;
+        }
+      }
+     
     return res.status(200).json(
-     new ApiResponse(200,{succes:true,message:"post fetched successfully",data:post})
+     new ApiResponse(200,{succes:true,message:"post fetched successfully",data:post,isSaved:isSaved})
         )
 
       } catch (error) {
