@@ -1,0 +1,4 @@
+@import "tailwindcss";
+  
+  /* use for tailwind CSS suggestion showing */
+  @tailwind utilities;
