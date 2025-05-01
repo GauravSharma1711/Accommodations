@@ -8,6 +8,7 @@ import SignUpPage from './pages/SignUpPage'
 import SinglePage from './pages/SinglePage'
 import { Route,Routes } from 'react-router-dom'
 import 'leaflet/dist/leaflet.css';
+import Profile from './pages/Profile'
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
 <Route path="/login" element={<LoginPage/>} />
 {/* <Route path="/:id" element={<SinglePage/>} /> */}
 <Route path="/s" element={<SinglePage/>} />
+<Route path="/profile" element={<Profile/>} />
       </Routes>
     </div>
   )

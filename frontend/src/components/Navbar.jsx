@@ -1,8 +1,10 @@
 // components/Navbar.js
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [open, SetOpen] = useState(false);
+const user = true;
 
   return (
     <nav className='flex justify-between items-center h-[60px] md:h-[80px] lg:h-[100px] leading-12 p-4 md:p-8'>
@@ -24,8 +26,31 @@ const Navbar = () => {
 
       <div className="flex items-center justify-end gap-2 md:gap-4">
         <div className="hidden lg:flex space-x-4">
+          {
+            user ?
+          (<div className=' flex items-center font-bold gap-4'>
+            <img className=' h-12 w-12 rounded-full' src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
+            <span>gaurav</span>
+            <div className='relative h-10 w-14'>
+  <Link
+    className='absolute top-0 left-0 h-10 w-14 rounded-md bg-amber-500 flex items-center justify-center text-white font-semibold'
+    to={'/profile'}
+  >
+    Profile
+  </Link>
+  <div className='absolute top-[-8px] right-[-8px] w-6 h-6 rounded-full text-white bg-red-600  flex items-center justify-center text-xs'>
+    3
+  </div>
+</div>
+          </div>)
+              :
+         ( 
+          <>
           <a href="" className='px-4 py-2 hover:text-gray-600'>SignUp</a>
           <a href="" className='bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>SignIn</a>
+          </>
+          )
+          }
         </div>
         <button
           onClick={() => SetOpen((prev) => !prev)}
