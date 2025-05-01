@@ -7,6 +7,8 @@ import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
 import SinglePage from './pages/SinglePage'
 import { Route,Routes } from 'react-router-dom'
+import 'leaflet/dist/leaflet.css';
+
 
 const App = () => {
   return (
