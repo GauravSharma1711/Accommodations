@@ -1,6 +1,7 @@
 import React from 'react';
 import { userData, listData } from '../lib/dummy.js';
 import Card from '../components/Card'; // Assuming you have a Card component
+import Chat from '../components/Chat.jsx';
 
 const Profile = () => {
   const data = listData;
@@ -49,13 +50,11 @@ const Profile = () => {
       </div>
 
       {/* Right Side - Empty Container (as per your provided structure) */}
-      <div className='w-full lg:w-1/3 bg-gray-100 rounded-lg shadow-md p-6 flex items-center justify-center overflow-hidden'>
-        {/* You can add content for the right side here if needed */}
-        <div className='text-center text-gray-600'>
-          {/* Placeholder for right side content */}
-          <h2 className='text-lg font-semibold mb-2'>Additional Information</h2>
-          <p className='text-sm'>This section can be used to display more user-related information or suggestions.</p>
-        </div>
+      <div className=' min-h-[calc(100vh-100px)]  w-full lg:w-1/3 bg-[rgb(252,245,243)] rounded-lg shadow-md p-6  
+       overflow-hidden'>
+
+     <Chat/>
+       
       </div>
     </div>
   );
