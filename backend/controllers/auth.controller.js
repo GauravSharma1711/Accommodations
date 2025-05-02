@@ -16,11 +16,12 @@ export const register = async (req, res) => {
       throw new ApiError(400, "User already exists");
     }
 
+    const hashedPassword = await bcrypt.hash(password,10);
 
     const newUser = await User.create({
       username,
       email,
-      password
+      password:hashedPassword
     });
 
     // Remove password from response
@@ -72,6 +73,8 @@ export const login = async(req,res)=>{
       }
      )
 
+     const {password:userPassword,...userInfo} = user.toObject();
+
      res.cookie("jwt",token,{
       httpOnly:true,
       sameSite:"Strict",
@@ -79,7 +82,7 @@ export const login = async(req,res)=>{
      })
 
      return res.status(200).json(
-      new ApiResponse(200,{succes:true,message:"logged in successfully"})
+      new ApiResponse(200,{succes:true,message:"logged in successfully",data:userInfo})
      )
 
   

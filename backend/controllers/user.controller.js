@@ -152,21 +152,21 @@ export const profilePost = async(req,res)=>{
     const userId = req.params.id;
 
     try {
-        const user = await User.findById(userId).populate('posts');
+        const user = await User.findById(userId).populate('posts').populate('savedPosts');
         if(!user){
-            throw new ApiError(404,"Usser not found")
+            throw new ApiError(404,"User not found")
         }
       
-        if (!user.posts || user.posts.length === 0) {
+if ((!user.posts || user.posts.length === 0) && (!user.savedPosts || user.savedPosts.length === 0)) {
             throw new ApiError(404, "No posts found for this user");
         }
 
         return res.status(200).json(
-            new ApiResponse(200,{posts:user.posts})
+            new ApiResponse(200,{userPosts:user.posts,savedPosts:user.savedPosts})
         )
     } catch (error) {
         console.log("error in get profilePosts controller",error);
-        throw new ApiError(500,"posts not found",error);
+        throw new ApiError(500,"error fetching posts",error);
     }
 
 }

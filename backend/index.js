@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.routes.js'
 import  healthRoute  from './routes/healthcheck.route.js';
 import userRoutes from './routes/user.routes.js'
 import postRoutes from './routes/post.routes.js'
+import testRoutes from './routes/test.route.js'
 
 import connectDB from './db/db.js';
 
@@ -19,7 +20,7 @@ const PORT = process.env.PORT;
 
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENT_URL,
     credentials: true  
 }));
 
@@ -33,7 +34,7 @@ app.use('/api/v1/auth',authRoutes);
 app.use('/api/v1/health',healthRoute);
 app.use('/api/v1/user',userRoutes);
 app.use('/api/v1/post',postRoutes)
-
+app.use('/api/v1/test',testRoutes)
 
 app.listen(PORT,()=>{
     connectDB();
