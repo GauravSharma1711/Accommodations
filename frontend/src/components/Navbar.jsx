@@ -1,10 +1,15 @@
 // components/Navbar.js
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
+
+  
+    const {currentUser} = useContext(AuthContext)
+
   const [open, SetOpen] = useState(false);
-const user = false;
+const user = true;
 
   return (
     <nav className='flex justify-between items-center h-[60px] md:h-[80px] lg:h-[100px] leading-12 p-4 md:p-8'>
@@ -27,7 +32,7 @@ const user = false;
       <div className="flex items-center justify-end gap-2 md:gap-4">
         <div className="hidden lg:flex space-x-4">
           {
-            user ?
+            currentUser ?
           (<div className=' flex items-center font-bold gap-4'>
             <img className=' h-12 w-12 rounded-full' src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
             <span>gaurav</span>
@@ -47,7 +52,7 @@ const user = false;
          ( 
           <>
           <a href="" className='px-4 py-2 hover:text-gray-600'>SignUp</a>
-          <a href="" className='bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>SignIn</a>
+          <a href="" className='bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>SignIn</a>
           </>
           )
           }

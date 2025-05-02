@@ -1,8 +1,16 @@
 // pages/HomePage.js
-import React from 'react'
+import React, { useContext } from 'react'
 import SearchBar from '../components/SearchBar'
+import { AuthContext } from '../context/AuthContext'
+
+
+
 
 const HomePage = () => {
+
+  const {currentUser} = useContext(AuthContext);
+console.log(currentUser);
+
   return (
     <div className='min-h-[calc(100vh-100px)] flex flex-col lg:flex-row'>
       <div className='w-full lg:w-2/3 p-6 md:p-12 font-bold leading-relaxed flex flex-col justify-center items-start'>

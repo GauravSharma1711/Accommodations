@@ -3,7 +3,26 @@ import { userData, listData } from '../lib/dummy.js';
 import Card from '../components/Card'; // Assuming you have a Card component
 import Chat from '../components/Chat.jsx';
 
+import apiRequest from '../lib/apiRequest.js';
+import { useNavigate } from 'react-router-dom';
+
 const Profile = () => {
+
+  const navigate = useNavigate();
+
+  const logoutHandler = async(e)=>{
+      e.preventDefault();
+      try {
+        const res = await apiRequest.delete('/auth/logout')
+        localStorage.removeItem("user");
+        navigate('/login')
+      } catch (error) {
+        console.log(error);
+        
+      };
+  }
+
+
   const data = listData;
   return (
     <div className='min-h-[calc(100vh-100px)] flex flex-col lg:flex-row gap-6 p-6 bg-gray-50'>
@@ -13,9 +32,20 @@ const Profile = () => {
         <div className='bg-white rounded-lg shadow-md p-6'>
           <div className='flex items-center justify-between mb-4'>
             <h1 className='text-xl font-semibold text-gray-900'>User Information</h1>
+
+            <div className=' flex gap-2'>
             <button className='bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
               Update Profile
             </button>
+            <button
+             className='bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-1'
+             onClick={logoutHandler}
+             >
+
+              Logout Profile
+            </button>
+            </div>
+
           </div>
           <div className='flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
