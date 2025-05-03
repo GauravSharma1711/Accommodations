@@ -6,10 +6,10 @@ import { AuthContext } from '../context/AuthContext';
 const Navbar = () => {
 
   
-    const {currentUser} = useContext(AuthContext)
+    const {currentUser} = useContext(AuthContext);
 
   const [open, SetOpen] = useState(false);
-const user = true;
+
 
   return (
     <nav className='flex justify-between items-center h-[60px] md:h-[80px] lg:h-[100px] leading-12 p-4 md:p-8'>
@@ -34,8 +34,8 @@ const user = true;
           {
             currentUser ?
           (<div className=' flex items-center font-bold gap-4'>
-            <img className=' h-12 w-12 rounded-full' src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="" />
-            <span>gaurav</span>
+            <img className=' h-12 w-12 rounded-full' src={currentUser.avatar || "/noavatar.jpg"} alt="" />
+            <span>{currentUser.username}</span>
             <div className='relative h-10 w-14'>
   <Link
     className='absolute top-0 left-0 h-10 w-14 rounded-md bg-amber-500 flex items-center justify-center text-white font-semibold'
@@ -51,8 +51,8 @@ const user = true;
               :
          ( 
           <>
-          <a href="" className='px-4 py-2 hover:text-gray-600'>SignUp</a>
-          <a href="" className='bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>SignIn</a>
+          <Link to={'/signup'} className='px-4 py-2 hover:text-gray-600'>SignUp</Link>
+          <Link to={'/login'} className='bg-amber-500 hover:bg-amber-600 text-white px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>SignIn</Link>
           </>
           )
           }

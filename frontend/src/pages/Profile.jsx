@@ -1,26 +1,39 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { userData, listData } from '../lib/dummy.js';
 import Card from '../components/Card'; // Assuming you have a Card component
 import Chat from '../components/Chat.jsx';
 
 import apiRequest from '../lib/apiRequest.js';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext.jsx';
 
 const Profile = () => {
 
+  const {updateUser,currentUser} = useContext(AuthContext)
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+  
+    if(!currentUser){
+      navigate('/login')
+    }
+  }, [currentUser,navigate])
+  
 
   const logoutHandler = async(e)=>{
       e.preventDefault();
       try {
-        const res = await apiRequest.delete('/auth/logout')
-        localStorage.removeItem("user");
+        await apiRequest.delete('/auth/logout')
+       updateUser(null)
         navigate('/login')
       } catch (error) {
         console.log(error);
-        
       };
   }
+
+
+
 
 
   const data = listData;
@@ -34,14 +47,17 @@ const Profile = () => {
             <h1 className='text-xl font-semibold text-gray-900'>User Information</h1>
 
             <div className=' flex gap-2'>
-            <button className='bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
+              <Link to={`/updateProfile/${currentUser.id}`} >
+            <button
+          
+            className='bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
               Update Profile
             </button>
+              </Link>
             <button
              className='bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-1'
              onClick={logoutHandler}
              >
-
               Logout Profile
             </button>
             </div>
@@ -50,15 +66,15 @@ const Profile = () => {
           <div className='flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
               <h3 className='text-lg font-semibold text-gray-700'>Avatar:</h3>
-              <img src={userData.img} alt='User Avatar' className='w-16 h-16 rounded-full object-cover shadow-sm' />
+              <img src={currentUser.avatar ||  '/noavatar.jpg'} alt='User Avatar' className='w-16 h-16 rounded-full object-cover shadow-sm' />
             </div>
             <div>
               <h3 className='text-lg font-semibold text-gray-700'>Username:</h3>
-              <span className='text-gray-600'>{userData.name}</span>
+              <span className='text-gray-600'>{currentUser.username}</span>
             </div>
             <div>
               <h3 className='text-lg font-semibold text-gray-700'>Email:</h3>
-              <span className='text-gray-600'>{userData.email}</span>
+              <span className='text-gray-600'>{currentUser.email}</span>
             </div>
           </div>
         </div>
