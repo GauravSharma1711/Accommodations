@@ -131,6 +131,8 @@ export const createPost = async (req, res) => {
     newPost.postDetail = newPostDetail._id;
     await newPost.save();
 
+    await User.findByIdAndUpdate(userId,{$push:{posts:newPost._id}} , { new: true })
+
     const populatedPost = await Post.findById(newPost._id).populate('postDetail')
 
     return res.status(200).json(

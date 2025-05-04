@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { userData, listData } from '../lib/dummy.js';
 import Card from '../components/Card'; // Assuming you have a Card component
 import Chat from '../components/Chat.jsx';
@@ -11,6 +11,9 @@ const Profile = () => {
 
   const {updateUser,currentUser} = useContext(AuthContext)
 
+  const [created , setCreated] = useState(null);
+  const [saved , setSaved] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +21,22 @@ const Profile = () => {
     if(!currentUser){
       navigate('/login')
     }
+
+
+    const fetchPost = async ()=>{
+      const res = await apiRequest.get(`/user/profilePost/${currentUser._id}`)
+      const userPosts = res.data.data.userPosts
+      const savedPosts = res.data.data.savedPosts
+         setCreated(userPosts);
+         setSaved(savedPosts);
+        
+         
+         
+      
+      
+      
+    }
+fetchPost();
   }, [currentUser,navigate])
   
 
@@ -48,7 +67,7 @@ const Profile = () => {
 
             <div className=' flex gap-2'>
               
-              <Link to={`/updateProfile/${currentUser.id}`} >
+              <Link to={`/updateProfile/${currentUser._id}`} >
             <button
             className='bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
               Update Profile
