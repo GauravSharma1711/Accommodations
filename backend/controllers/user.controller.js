@@ -44,48 +44,53 @@ export const getUser = async(req,res)=>{
    }
 }
 
-export const updateUser = async(req,res)=>{
-
-    const {username,email,password} = req.body
-
+export const updateUser = async (req, res) => {
+    const { password, avatar, ...inputs } = req.body;
     const id = req.params.id;
-    const loggedInUserId = req.user.id
-
-          try {
-let hashedPassword  = null;
-            if(password){
-hashedPassword = await bcrypt.hash(password,10)
-            }
-
-    
-        if(id.toString() !== loggedInUserId.toString()){
-            throw new ApiError(403,"not authorized to update user")
+    const loggedInUserId = req.user.id;
+  
+    try {
+      if (id.toString() !== loggedInUserId.toString()) {
+        throw new ApiError(403, "Not authorized to update user");
+      }
+  
+      let hashedPassword = null;
+      if (password) {
+        hashedPassword = await bcrypt.hash(password, 10);
+      }
+  
+      const updateFields = {
+        ...inputs,
+        ...(hashedPassword && { password: hashedPassword }),
+        ...(avatar && { avatar }),
+      };
+  
+      const result = await User.findByIdAndUpdate(
+        id,
+        updateFields,
+        {
+          new: true,
+          select: "-password", // exclude password from response
         }
-    
-const result = await User.findByIdAndUpdate(
-    id,
-    {
-        username,
-        email,
-        password:hashedPassword || undefined
-    },
-    {  new:true
- }
-)
-
-if (!result) {
-    throw new ApiError(404, "User not found");
-  }
-        
-return res.status(200).json(
-    new ApiResponse(200,{message:"user updated successfully",data:result}))
-
-
-} catch (error) {
-    console.log("error in updateUser controller",error);
-    throw new ApiError(403,"cannot update user")
-
-}}
+      );
+  
+      if (!result) {
+        throw new ApiError(404, "User not found");
+      }
+  
+      return res.status(200).json(
+        new ApiResponse(200, {
+          message: "User updated successfully",
+          data: result,
+        })
+      );
+  
+    } catch (error) {
+      console.log("error in updateUser controller", error);
+      throw new ApiError(403, "Cannot update user");
+    }
+  };
+  
 
 export const deleteUser = async(req,res)=>{
 

@@ -6,37 +6,52 @@ import {ApiError} from '../utils/api-error.js'
 import {ApiResponse} from '../utils/api-response.js'
 import jwt from 'jsonwebtoken'
 
-export const getPosts = async(req,res)=>{
+export const getPosts = async (req, res) => {
+  const { city, minPrice, maxPrice, type } = req.query;
 
-      try {
-        const posts = await Post.find({});
+  try {
+    const query = {
+      ...(city && { city: { $regex: city, $options: "i" } }),
+      ...(type && { type }), // assuming type is "BUY" or "RENT"
+      ...(minPrice && { price: { $gte: Number(minPrice) } }),
+      ...(maxPrice && {
+        price: { ...(minPrice ? { $gte: Number(minPrice) } : {}), $lte: Number(maxPrice) },
+      }),
+    };
 
-        if(!posts){
-            throw new ApiError(404,"no post found")
-        }
-
-        return res.status(200).json(
-            new ApiResponse(200,{succes:true,message:"all posts fetched",data:posts})
-        )
-
-      } catch (error) {
-        console.log("error in getPosts controller",error);
-        throw new ApiError(500,"error while fetching all posts")
-      }
+    const posts = await Post.find(query).populate('postDetail');
 
 
-}
+    if (!posts || posts.length === 0) {
+      return res.status(404).json({ success: false, message: "No posts found" });
+    }
+
+    return res.status(200).json({ success: true, data: posts });
+
+  } catch (error) {
+    console.log("Error in getPosts controller", error);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 
 export const getPostById = async(req,res)=>{
     try {
         const postId  = req.params.id;
         const post = await Post.findById(postId)
+        .populate('postDetail')
+        .populate({
+          path:'createdBy',
+       select: 'username avatar',
+           }
 
+        );
+          
         if(!post){
             throw new ApiError(404," post not found")
         }
 
-        let userId=nul;
+        let userId=null;
       const token = req.cookies?.token;
       if(token){
         try {
@@ -50,6 +65,9 @@ export const getPostById = async(req,res)=>{
       let isSaved = false;
 
       if (userId) {
+
+       
+
         const saved = await SavedPost.findOne({
           savedBy: userId,
           createdBy: postId,
@@ -61,7 +79,9 @@ export const getPostById = async(req,res)=>{
       }
      
     return res.status(200).json(
-     new ApiResponse(200,{succes:true,message:"post fetched successfully",data:post,isSaved:isSaved})
+     new ApiResponse(200,{succes:true,message:"post fetched successfully",
+      data:post,
+      isSaved:isSaved})
         )
 
       } catch (error) {
@@ -70,23 +90,23 @@ export const getPostById = async(req,res)=>{
       }
 }
 
-
 export const createPost = async (req, res) => {
-  const userId = req.user.id; 
+  const userId = req.user.id;
   try {
-    const body = req.body;
+    console.log(req.body);
+    
 
-    // Validate that the required fields are present
-    if (!body.postData || !body.postDetails) {
+    const { postData, postDetails } = req.body;
+
+    if (!postData || !postDetails) {
       return res.status(400).json({
         error: 'Missing required fields: postData or postDetails',
       });
     }
 
-  
     const existingPost = await Post.findOne({
-      latitude: body.postData.latitude,
-      longitude: body.postData.longitude,
+      latitude: postData.latitude,
+      longitude: postData.longitude,
     });
 
     if (existingPost) {
@@ -95,16 +115,30 @@ export const createPost = async (req, res) => {
       });
     }
 
-  
+   
     const newPost = await Post.create({
-      postData: body.postData,
+      ...postData, 
       createdBy: userId,
-      postDetail: body.postDetails, 
+    });
+
+    
+    const newPostDetail = await PostDetail.create({
+      ...postDetails,
+      post: newPost._id,
     });
 
    
+    newPost.postDetail = newPostDetail._id;
+    await newPost.save();
+
+    const populatedPost = await Post.findById(newPost._id).populate('postDetail')
+
     return res.status(200).json(
-      new ApiResponse(200, { success: true, message: 'Post created successfully', data: newPost })
+      new ApiResponse(200, {
+        success: true,
+        message: 'Post created successfully',
+        data: populatedPost,
+      })
     );
   } catch (error) {
     console.log('Error in createPost controller', error);

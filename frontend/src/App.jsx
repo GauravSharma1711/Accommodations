@@ -11,7 +11,8 @@ import 'leaflet/dist/leaflet.css';
 import Profile from './pages/Profile'
 import PrivateRoute from './components/PrivateRoute'
 import ProfileUpdate from './pages/ProfileUpdate'
-
+import NewPostPage from './pages/NewPostPage'
+import { singlePageLoader } from './lib/loaders.js'
 
 const App = () => {
   return (
@@ -22,11 +23,11 @@ const App = () => {
 <Route path="/list" element={<ListPage/>} />
 <Route path="/signup" element={<SignUpPage/>} />
 <Route path="/login" element={<LoginPage/>} />
-{/* <Route path="/:id" element={<SinglePage/>} /> */}
 
-<Route path="/s" element={
+<Route path="/:id" element={
   <PrivateRoute>
     <SinglePage/>
+    {/* loader: SinglePageLoader */}
   </PrivateRoute>
 }/>
 
@@ -37,6 +38,7 @@ const App = () => {
 } />
 <Route path="/updateProfile/:id" element={<ProfileUpdate />} />
 
+<Route path="/add" element={<NewPostPage />} />
 
       </Routes>
     </div>

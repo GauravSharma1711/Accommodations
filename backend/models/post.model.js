@@ -15,7 +15,7 @@ const PostSchema = new Schema(
     images: {
       type: [String],
       required: true,
-    },
+  },
     address: {
       type: String,
       required: true,
@@ -28,27 +28,32 @@ const PostSchema = new Schema(
       type: Number,
       required: true,
     },
+    
     bathroom: {
       type: Number,
       required: true,
     },
     latitude: {
-      type: String,
+      type: Number,
       required: true,
     },
     longitude: {
-      type: String,
+      type: Number,
       required: true,
     },
     type: {
       type: String,
-      enum: ["SELL", "RENT", "LEASE","BUY"], 
+      enum: ["RENT","BUY"], 
       required: true,
     },
     property: {
       type: String,
       enum: ["APARTMENT", "HOUSE", "LAND"], 
       required: true,
+    },
+    propertysize: {
+      type: Number,
+      default: null,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,

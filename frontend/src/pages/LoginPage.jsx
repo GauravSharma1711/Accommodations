@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
 import { AuthContext } from '../context/AuthContext';
+import apiRequest from '../lib/apiRequest.js'
 
 const LoginPage = () => {
 
@@ -21,9 +22,9 @@ const [password, setPassword] = React.useState("");
       console.log(email,password);
 
       try {
-    const res = await axios.post("http://localhost:8000/api/v1/auth/login",{
+    const res = await apiRequest.post("/auth/login",{
       email,password
-    }, { withCredentials: true })
+    })
     
     console.log(res);
 

@@ -20,7 +20,15 @@ const PostDetailSchema = new Schema(
       type: String,
       default: null,
     },
-    size: {
+     roomsize: {
+      type: Number,
+      default: null,
+    },
+    bedroomsize: {
+      type: Number,
+      default: null,
+    },
+    bathroomsize: {
       type: Number,
       default: null,
     },

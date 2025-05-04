@@ -47,9 +47,9 @@ const Profile = () => {
             <h1 className='text-xl font-semibold text-gray-900'>User Information</h1>
 
             <div className=' flex gap-2'>
+              
               <Link to={`/updateProfile/${currentUser.id}`} >
             <button
-          
             className='bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
               Update Profile
             </button>
@@ -83,9 +83,11 @@ const Profile = () => {
         <div className='bg-white rounded-lg h-[400px] shadow-md p-6 overflow-y-scroll '>
           <div className='flex items-center justify-between mb-4'>
             <h1 className='text-xl font-semibold text-gray-900'>My Listings</h1>
+            <Link to={'/add'}>
             <button className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1'>
               Add New Post
             </button>
+            </Link>
           </div>
           <div className='flex flex-col gap-4'>
             {data.map((item) => (

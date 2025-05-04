@@ -5,7 +5,13 @@ import Pin from './Pin'
 const Map = ({items}) => {
   return (
     <MapContainer 
-     center={[52.4797,-1.90269]} zoom={6} scrollWheelZoom={false}
+    
+     center={items.length===1 ?
+      [items[0].latitude,items[0].longitude]
+      :
+      [52.4797,-1.90269]}
+
+      zoom={6} scrollWheelZoom={false}
      className=' h-full w-full rounded-sm'
      >
     <TileLayer
@@ -13,7 +19,7 @@ const Map = ({items}) => {
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
        {items.map(item=>(
-        <Pin item={item} key={item.id} />
+        <Pin item={item} key={item._id} />
        ))}
   </MapContainer>
   )

@@ -4,12 +4,12 @@ const { Schema, model } = mongoose;
 
 const SavedPostSchema = new Schema(
   {
-    savedBy: { // post saved by
+    savedBy: { // post saved by (userid)
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    createdBy: {  // saved post has new document which was created by clicking this post
+    createdBy: {  // saved post has new document which was created by clicking this post (postid)
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Post',
       required: true,

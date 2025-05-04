@@ -15,7 +15,7 @@ const ProfileUpdate = () => {
 
     const {currentUser, updateUser} = useContext(AuthContext);
 
-const  [avatar, setAvatar] = useState(currentUser.avatar)
+const  [avatar, setAvatar] = useState([])
 
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -26,7 +26,7 @@ const  [avatar, setAvatar] = useState(currentUser.avatar)
             console.log("currentUser:", currentUser);
 
          const res = await apiRequest.put(`/user/updateUser/${currentUser._id}`,{
-            username,email,password,avatar
+            username,email,password,avatar:avatar[0]
          })
          console.log(res)
          updateUser(res.data.data.data);
@@ -93,7 +93,7 @@ const  [avatar, setAvatar] = useState(currentUser.avatar)
       {/* Side Container */}
       <div className="flex-2 bg-[#fcf5f3] flex flex-col items-center justify-center gap-5 p-6">
         <img
-          src={avatar || "/noavatar.jpg"}
+          src={(avatar[0] ||currentUser.avatar) || "/noavatar.jpg"}
           defaultValue={currentUser.avatar || "/noavatar.jpg"}
           alt="avatar"
           className="w-1/2 object-cover rounded-full"
@@ -109,7 +109,7 @@ const  [avatar, setAvatar] = useState(currentUser.avatar)
             maxImageFileSize:2000000,
             folder:"avatars"
           }} 
-          setAvatar = {setAvatar}
+          setState = {setAvatar}
           />
           {/* <button className="px-4 py-2 bg-gray-200 rounded-md">Upload Widget</button> */}
         </div>

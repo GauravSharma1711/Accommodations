@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Card = ({ item }) => {
+const Card = ({ item,id }) => {
   return (
     <div className='flex flex-col sm:flex-row gap-6 rounded-md mb-4 shadow-md overflow-hidden'>
       <div className='w-full sm:w-1/3'>
-        <Link to={`/${item.id}`}>
+        <Link to={`/${item._id}`}>
           <img src={item.img} className='w-full h-48 object-cover rounded-t-md sm:rounded-l-md sm:rounded-t-none' alt={item.title} />
         </Link>
       </div>
@@ -13,7 +13,7 @@ const Card = ({ item }) => {
       <div className='flex flex-col justify-between p-4 w-full sm:w-2/3'>
         <div>
           <h2 className='text-xl font-semibold mb-2'>
-            <Link to={`/${item.id}`} className='hover:underline'>
+            <Link to={`/${item._id}`} className='hover:underline'>
               {item.title}
             </Link>
           </h2>
