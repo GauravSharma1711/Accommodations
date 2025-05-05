@@ -27,6 +27,10 @@ const Profile = () => {
       const res = await apiRequest.get(`/user/profilePost/${currentUser._id}`)
       const userPosts = res.data.data.userPosts
       const savedPosts = res.data.data.savedPosts
+      console.log(userPosts);
+      console.log(savedPosts);
+      
+      
          setCreated(userPosts);
          setSaved(savedPosts);
         
@@ -100,7 +104,7 @@ fetchPost();
 
         {/* My Listings */}
         <div className='bg-white rounded-lg h-[400px] shadow-md p-6 overflow-y-scroll '>
-          <div className='flex items-center justify-between mb-4'>
+                <div className='flex items-center justify-between mb-4'>
             <h1 className='text-xl font-semibold text-gray-900'>My Listings</h1>
             <Link to={'/add'}>
             <button className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1'>
@@ -109,11 +113,25 @@ fetchPost();
             </Link>
           </div>
           <div className='flex flex-col gap-4'>
-            {data.map((item) => (
-              <Card key={item.id} item={item} />
+            {created?.map((item) => (
+              <Card key={item._id} item={item} />
             ))}
           </div>
         </div>
+
+{/* my saved */}
+        <div className='bg-white rounded-lg h-[400px] shadow-md p-6 overflow-y-scroll '>
+                <div className='flex items-center justify-between mb-4'>
+            <h1 className='text-xl font-semibold text-gray-900'>My Saved</h1>
+        
+          </div>
+          <div className='flex flex-col gap-4'>
+            {saved?.map((item) => (
+              <Card key={item._id} item={item.createdBy} />
+            ))}
+          </div>
+        </div>
+
       </div>
 
       {/* Right Side - Empty Container (as per your provided structure) */}
