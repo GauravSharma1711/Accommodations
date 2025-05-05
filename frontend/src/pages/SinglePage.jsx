@@ -1,19 +1,21 @@
 import React,{useState,useEffect, useContext} from 'react';
 import Slider from '../components/Slider';
-import { singlePostData } from '../lib/dummy.js';
+
 import Map from '../components/Map.jsx';
 import apiRequest from '../lib/apiRequest.js';
-import { useNavigate, useParams } from 'react-router-dom';
+
 import {AuthContext} from '../context/AuthContext.jsx'
+import { useNavigate, useParams } from 'react-router-dom';
+
+
 
 const SinglePage = () => {
 
-  // const post = useLoaderData();
-  // console.log(post);
+ 
   const { id } = useParams();
   const [post, setPost] = useState(null);
   
-   const [saved, setSaved] = useState(false);
+   const [issaved, setIsSaved] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,40 +23,46 @@ const SinglePage = () => {
   
   useEffect(() => {
     const fetchPost = async () => {
-      const res = await apiRequest.get(`/post/getPostById/${id}`); 
-      const postData = await res.data.data.data
-      const save = await res.data.data.isSaved
-
-      setPost(postData);
-      setSaved(save);
-
-      // console.log(save); 
-      // console.log(postData);
-      
+      try {
+        const res = await apiRequest.get(`/post/getPostById/${id}`);
+        const postData = res.data.data.data;
+        const savedFlag = res.data.data.isSaved;
+       console.log(savedFlag);
+       
+        setPost(postData);
+        setIsSaved(savedFlag);
+       
+      } catch (err) {
+        console.log("Error fetching post:", err);
+      }
     };
+
     fetchPost();
   }, [id]);
 
+
+ 
   const handleSave = async(e)=>{
-    setSaved((prev)=>!prev)
  e.preventDefault();
  if(!currentUser){
 navigate('/login');
+return
  }
 
 try {
   const res = await apiRequest.post('/user/savePost',{
     postId:id
   })
+  setIsSaved(prev => !prev);
   console.log(res);
 } catch (error) {
   console.log(error);
-  setSaved((prev)=>!prev)
-  
+ 
 }
 
  
   }
+
 
 
   if (!post) return <div>Loading...</div>;
@@ -66,7 +74,7 @@ try {
     <div className='min-h-[calc(100vh-64px)] md:min-h-[calc(100vh-100px)] flex flex-col lg:flex-row gap-6 p-6 bg-gray-50'>
       {/* Left Side (Image Slider and Details) */}
       <div className='w-full lg:w-2/3 flex flex-col gap-6'>
-        <Slider images={singlePostData.images} />
+        <Slider images={post.images} />
         <div className='bg-white rounded-lg shadow-md p-6'>
           <div className='mb-6'>
             <h1 className='text-3xl font-semibold text-gray-900 mb-3'>{post.title}</h1>
@@ -191,14 +199,15 @@ try {
           onClick={handleSave}
 
           className={`flex-1 flex items-center justify-center gap-2 ${
-            saved ? 'bg-amber-500 text-white' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+            issaved ? 'bg-amber-500 text-white' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
           } font-semibold py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-1`}
           
           
           >
 
             <img src='/save.png' alt='Save' className='w-5 h-5' />
-           { saved ? "place saved" : "Save this Place"}
+           { issaved ? "place saved" : "Save this Place"}
+          
           </button>
         </div>
       </div>

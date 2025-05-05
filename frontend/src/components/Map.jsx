@@ -9,9 +9,9 @@ const Map = ({items}) => {
      center={items.length===1 ?
       [items[0].latitude,items[0].longitude]
       :
-      [52.4797,-1.90269]}
+      [30.3165,78.0322]}
 
-      zoom={6} scrollWheelZoom={false}
+      zoom={11} scrollWheelZoom={false}
      className=' h-full w-full rounded-sm'
      >
     <TileLayer

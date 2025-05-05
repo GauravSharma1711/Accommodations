@@ -3,6 +3,7 @@ import { ApiError } from "../utils/api-error.js";
 import User from "../models/user.model.js"
 import Post from "../models/post.model.js";
 import SavedPost from "../models/savedPost.model.js";
+import bcrypt from "bcryptjs";
 
 export const getUsers = async(req,res)=>{
     
@@ -48,6 +49,7 @@ export const updateUser = async (req, res) => {
     const { password, avatar, ...inputs } = req.body;
     const id = req.params.id;
     const loggedInUserId = req.user.id;
+  console.log(password);
   
     try {
       if (id.toString() !== loggedInUserId.toString()) {
@@ -122,19 +124,21 @@ export const savePost = async(req,res)=>{
         const userId = req.user.id;
 
         try {
-            const savedPost = await SavedPost.findOne({
+            const existingSavedPost = await SavedPost.findOne({
                 savedBy: userId, createdBy: postId 
             })
 
-            if(savedPost){
-await SavedPost.findByIdAndDelete(savedPost._id);
-await User.findByIdAndUpdate(userId,{$pull:{savedPosts:savedPost._id}} , { new: true })
-await Post.findByIdAndUpdate(postId,{$pull:{savedPosts:savedPost._id}} , { new: true})
+            if(existingSavedPost){
+await SavedPost.findByIdAndDelete(existingSavedPost._id);
+await User.findByIdAndUpdate(userId,{$pull:{savedPosts:existingSavedPost._id}} , { new: true })
+await Post.findByIdAndUpdate(postId,{$pull:{savedPosts:existingSavedPost._id}} , { new: true})
               return res.status(200).json(
-                new ApiResponse(200,{message:"post deleted successfully"})
+                new ApiResponse(200,{message:"post unsaved successfully"})
               )
             }
 
+
+            //save the psot
             const newSavedPost = await SavedPost.create({
                 savedBy: userId,
                 createdBy: postId,
@@ -143,12 +147,15 @@ await Post.findByIdAndUpdate(postId,{$pull:{savedPosts:savedPost._id}} , { new: 
     await User.findByIdAndUpdate(userId,{$push:{savedPosts:newSavedPost._id}} , { new: true })
 await Post.findByIdAndUpdate(postId,{$push:{savedPosts:newSavedPost._id}} , { new: true})
 
-             return res.status(201).json(new ApiResponse(200,{ message: 'Post saved successfully', savedPost: newSavedPost }));
+             return res
+             .status(201)
+             .json(new ApiResponse(200,{ message: 'Post saved successfully', savedPost: newSavedPost }));
 
 
         } catch (error) {
             console.log("Error in savePost controller",error);
-            return res.status(500,"error in savePost controller",error);
+            return res
+            .status(500,"error in savePost controller",error);
         }
 }
 

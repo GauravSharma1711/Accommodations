@@ -6,7 +6,7 @@ const Card = ({ item,id }) => {
     <div className='flex flex-col sm:flex-row gap-6 rounded-md mb-4 shadow-md overflow-hidden'>
       <div className='w-full sm:w-1/3'>
         <Link to={`/${item._id}`}>
-          <img src={item.img} className='w-full h-48 object-cover rounded-t-md sm:rounded-l-md sm:rounded-t-none' alt={item.title} />
+          <img src={item.images[0]} className='w-full h-48 object-cover rounded-t-md sm:rounded-l-md sm:rounded-t-none' alt={item.title} />
         </Link>
       </div>
 

@@ -20,6 +20,7 @@ const Profile = () => {
   
     if(!currentUser){
       navigate('/login')
+      return
     }
 
 

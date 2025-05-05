@@ -155,21 +155,21 @@ try {
               </div>
               <div className="w-1/3 flex flex-col gap-2">
                 <label htmlFor="size">Property Size (sqft)</label>
-                <input min={0} id="size" name="propertysize" type="number" className="p-4 border rounded" />
+                <input min={0} id="propertysize" name="propertysize" type="number" className="p-4 border rounded" />
               </div>
               <div className="w-1/3 flex flex-col gap-2">
                 <label htmlFor="size">Room Size (sqft)</label>
-                <input min={0} id="size" name="roomsize" type="number" className="p-4 border rounded" />
+                <input min={0} id="roomsize" name="roomsize" type="number" className="p-4 border rounded" />
               </div>
 
               <div className="w-1/3 flex flex-col gap-2">
                 <label htmlFor="size">BedRoom Size (sqft)</label>
-                <input min={0} id="size" name="bedroomsize" type="number" className="p-4 border rounded" />
+                <input min={0} id="bedroomsize" name="bedroomsize" type="number" className="p-4 border rounded" />
               </div>
 
               <div className="w-1/3 flex flex-col gap-2">
                 <label htmlFor="size">BathRoom Size (sqft)</label>
-                <input min={0} id="size" name="bathroomsize" type="number" className="p-4 border rounded" />
+                <input min={0} id="bathroomsize" name="bathroomsize" type="number" className="p-4 border rounded" />
               </div>
 
               <div className="w-1/3 flex flex-col gap-2">

@@ -52,8 +52,10 @@ export const getPostById = async(req,res)=>{
         }
 
         let userId=null;
-      const token = req.cookies?.token;
-      if(token){
+        const token = req.cookies?.jwt;
+        console.log(token);
+        
+        if(token){
         try {
           const decoded = jwt.verify(token, process.env.JWT_SECRET);
           userId = decoded?.id || null;
@@ -62,16 +64,22 @@ export const getPostById = async(req,res)=>{
         }
       }
 
+
+
       let isSaved = false;
 
-      if (userId) {
+      console.log(userId);
+      console.log(postId);
+      
+      
 
-       
+      if (userId) {
 
         const saved = await SavedPost.findOne({
           savedBy: userId,
           createdBy: postId,
         });
+        
   
         if (saved) {
           isSaved = true;

@@ -26,7 +26,10 @@ const  [avatar, setAvatar] = useState([])
             console.log("currentUser:", currentUser);
 
          const res = await apiRequest.put(`/user/updateUser/${currentUser._id}`,{
-            username,email,password,avatar:avatar[0]
+            username,
+            email,
+           password:password.trim(),
+            avatar:avatar[0]
          })
          console.log(res)
          updateUser(res.data.data.data);
