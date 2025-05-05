@@ -157,7 +157,17 @@ export const profilePost = async(req,res)=>{
     const userId = req.params.id;
 
     try {
-        const user = await User.findById(userId).populate('posts').populate('savedPosts');
+        const user = await User.findById(userId)
+        .populate('posts')
+        .populate({
+          path:'savedPosts',
+          populate:{
+            path:'createdBy',
+            model:'Post'
+          }
+        });
+
+
         if(!user){
             throw new ApiError(404,"User not found")
         }
