@@ -30,6 +30,9 @@ const SinglePage = () => {
        console.log(savedFlag);
        
         setPost(postData);
+       
+        
+        
         setIsSaved(savedFlag);
        
       } catch (err) {
@@ -41,6 +44,10 @@ const SinglePage = () => {
   }, [id]);
 
 
+  useEffect(() => {
+    console.log("Post updated:", post);
+  }, [post]);
+  
  
   const handleSave = async(e)=>{
  e.preventDefault();
