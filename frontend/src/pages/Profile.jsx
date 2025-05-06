@@ -14,6 +14,8 @@ const Profile = () => {
   const [created , setCreated] = useState(null);
   const [saved , setSaved] = useState(null);
 
+  const [chats , setChats] = useState(null);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,6 +25,8 @@ const Profile = () => {
       return
     }
 
+   
+    
 
     const fetchPost = async ()=>{
       const res = await apiRequest.get(`/user/profilePost/${currentUser._id}`)
@@ -34,16 +38,21 @@ const Profile = () => {
       
          setCreated(userPosts);
          setSaved(savedPosts);
-        
-         
-         
-      
-      
-      
     }
+
+    const fetchChats = async ()=>{
+      const res = await apiRequest.get('/chat/getChats');
+       console.log("chats",res.data.data.data);
+       setChats(res.data.data.data)
+    }
+
+    fetchChats();
 fetchPost();
   }, [currentUser,navigate])
   
+
+
+
 
   const logoutHandler = async(e)=>{
       e.preventDefault();
@@ -139,7 +148,7 @@ fetchPost();
       <div className=' min-h-[calc(100vh-100px)]  w-full lg:w-1/3 bg-[rgb(252,245,243)] rounded-lg shadow-md p-6  
        overflow-hidden'>
 
-     <Chat/>
+     <Chat chats={chats} />
        
       </div>
     </div>

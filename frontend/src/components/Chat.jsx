@@ -1,152 +1,149 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { userData } from '../lib/dummy.js'; // Assuming userData has user details
 
-const Chat = () => {
-  // Dummy chat list (replace with actual data fetching)
-  const [chatList, setChatList] = useState([
-    { id: 1, name: 'John Doe', lastMessage: 'Lorem ipsum dolor sit...', timestamp: '10:00 AM', avatar: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { id: 2, name: 'Jane Smith', lastMessage: 'How are you today?', timestamp: 'Yesterday', avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { id: 3, name: 'Peter Jones', lastMessage: 'Did you see the new listing?', timestamp: '2 days ago', avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { id: 4, name: 'Peter Jones', lastMessage: 'Did you see the new listing?', timestamp: '2 days ago', avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { id: 5, name: 'Peter Jones', lastMessage: 'Did you see the new listing?', timestamp: '2 days ago', avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-    { id: 6, name: 'Peter Jones', lastMessage: 'Did you see the new listing?', timestamp: '2 days ago', avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2' },
-   
+
+
+
+import React, { useContext, useRef, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import apiRequest from "../lib/apiRequest.js";
+import { formatDistanceToNow } from 'date-fns';
+
+
+const Chat = ({chats}) => {
+
+  const {currentUser} = useContext(AuthContext)
+
+  const [chatBox, setChatBox] = useState(null)
+  
+  
+  const handleOpenChat = async(id,receiver)=>{
+          try {
+          const res = await apiRequest.get(`/chat/${id}`)
+console.log("single chat",res.data.data.data);
+console.log("cur user",currentUser);
+
+setChatBox({...res.data.data.data,receiver})
+            
+          } catch (error) {
+              console.log(error);
+              
+            
+          }
     
-  ]);
+  }
 
-  const [currentChat, setCurrentChat] = useState(null);
-  const [messages, setMessages] = useState([]); // Messages for the selected chat
-  const [newMessage, setNewMessage] = useState('');
-  const messageAreaRef = useRef(null);
 
-  useEffect(() => {
-    // Dummy message fetching based on currentChat (replace with API call)
-    if (currentChat) {
-      // Simulate fetching messages
-      setTimeout(() => {
-        setMessages([
-          { sender: currentChat.name, text: 'Hello!', timestamp: '10:00 AM' },
-          { sender: userData.name, text: 'Hi John, how are you?', timestamp: '10:02 AM' },
-          { sender: currentChat.name, text: 'I am doing well, thanks!', timestamp: '10:05 AM' },
-          // Add more messages for the selected chat
-        ]);
-      }, 200);
-    } else {
-      setMessages([]);
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+    const formData = new FormData(e.target)
+    const text = formData.get("text");
+    if(!text)return;
+    try {
+      
+      const res = await apiRequest.post(`/message/${chatBox._id}`,{text})
+      console.log(res);
+      
+ setChatBox(prev  =>({
+  ...prev,
+  messages:[...(prev.messages||[]) ,res.data.data.data]}))
+  e.target.reset()
+    } catch (error) {
+      console.log(error);
+      
     }
-  }, [currentChat]);
 
-  useEffect(() => {
-    // Scroll to the bottom of the message area
-    if (messageAreaRef.current) {
-      messageAreaRef.current.scrollTop = messageAreaRef.current.scrollHeight;
-    }
-  }, [messages]);
+  }
 
-  const handleSendMessage = () => {
-    if (currentChat && newMessage.trim()) {
-      const newMessageObject = {
-        sender: userData.name,
-        text: newMessage,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      };
-      setMessages([...messages, newMessageObject]);
-      setNewMessage('');
-      // In a real application, send this message to the server for the currentChat
-    }
-  };
-
-  const handleChatClick = (chat) => {
-    setCurrentChat(chat);
-  };
 
   return (
-    <div className='h-full flex flex-col bg-white rounded-lg shadow-md overflow-hidden'>
-      {/* Upper Half - List of Recent Chats */}
-      <div className='h-1/2 overflow-y-auto p-4 border-b'>
-        <h2 className='font-semibold text-lg text-gray-800 mb-3'>Recent Chats</h2>
-        <ul className='space-y-2'>
-          {chatList.map((chat) => (
-            <li
-              key={chat.id}
-              className={`flex items-center gap-3 p-3 rounded-md cursor-pointer hover:bg-gray-100 ${currentChat?.id === chat.id ? 'bg-blue-50 text-blue-700' : ''}`}
-              onClick={() => handleChatClick(chat)}
-            >
-              <img className='h-10 w-10 rounded-full object-cover' src={chat.avatar} alt={chat.name} />
-              <div className='flex flex-col flex-grow'>
-                <span className='font-semibold text-sm text-gray-900'>{chat.name}</span>
-                <p className='text-xs text-gray-600 truncate'>{chat.lastMessage}</p>
-              </div>
-              <span className='text-xs text-gray-500'>{chat.timestamp}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <div className="h-full flex flex-col">
+      {/* Messages List */}
+      <div className="flex-1 flex flex-col gap-5 overflow-y-scroll p-4">
+        <h1 className="font-light text-xl">Messages</h1>
+        {chats?.map((chat, index) => (
+          <div
+          key={chat.id || index}
+            className={` p-5 rounded-lg flex items-center gap-5 cursor-pointer ${chat.seenBy.includes(currentUser._id)?"bg-white":"bg-amber-100"}`}
 
-      {/* Lower Half - Individual Chat Window */}
-      <div className='h-1/2 flex flex-col'>
-        {currentChat ? (
-          <>
-            {/* Chat Header */}
-            <div className='p-4 border-b flex items-center justify-between'>
-              <div className='flex items-center gap-3'>
-                <img className='h-10 w-10 rounded-full object-cover' src={currentChat.avatar} alt={currentChat.name} />
-                <h3 className='font-semibold text-gray-900'>{currentChat.name}</h3>
-              </div>
-              <button onClick={() => handleChatClick(null)} className='text-gray-500 hover:text-gray-700 focus:outline-none'>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </button>
+            onClick={()=>handleOpenChat(chat.id,chat.receiver)}
+          >
+            <img
+               src={chat.receiver?.avatar || "/noavatar.jpg"}
+              alt=""
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div>
+              <span className="font-bold block">{chat.receiver?.username}</span>
+              <p className="text-sm text-gray-600">{chat.lastMessage}...</p>
             </div>
-
-            {/* Message Area */}
-            <div ref={messageAreaRef} className='flex-grow overflow-y-auto p-4 space-y-2'>
-              {messages.map((msg, index) => (
-                <div key={index} className={`flex ${msg.sender === userData.name ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`bg-gray-200 rounded-lg p-3 max-w-xs break-words ${msg.sender === userData.name ? 'bg-blue-100 text-blue-800' : 'bg-gray-200 text-gray-800'}`}>
-                    <p className='text-sm'>{msg.text}</p>
-                    <span className='text-xs text-gray-500'>{msg.timestamp}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Input Area */}
-            <div className='p-4 border-t'>
-              <div className='flex items-center'>
-                <textarea
-                  className='flex-grow border rounded-md py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none'
-                  rows="1"
-                  placeholder={`Message ${currentChat.name}...`}
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                />
-                <button
-                  className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md ml-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1 disabled:bg-gray-400 disabled:cursor-not-allowed'
-                  onClick={handleSendMessage}
-                  disabled={!newMessage.trim() || !currentChat}
-                >
-                  Send
-                </button>
-              </div>
-            </div>
-          </>
-        ) : (
-          // Display a message when no chat is selected
-          <div className='flex items-center justify-center h-full text-gray-500'>
-            Select a chat to start messaging.
           </div>
-        )}
+        ))}
       </div>
+
+
+
+      {/* Chat Box */}
+
+      {
+      chatBox &&
+      
+      <div className="flex-1 bg-white flex flex-col justify-between">
+        {/* Top Bar */}
+        <div className="bg-yellow-300/50 p-5 font-bold flex items-center justify-between">
+          <div className="flex items-center gap-5">
+            <img
+              src={chatBox.receiver.avatar || "/noavatar.jpg"}
+              alt=""
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <span>{chatBox.receiver.username}</span>
+          </div>
+          <span 
+          onClick={()=>setChatBox(null)}
+           className="cursor-pointer">X</span>
+        </div>
+
+        {/* Messages Area */}
+        <div className="h-[350px] overflow-y-scroll p-5 flex flex-col gap-5">
+          
+          {chatBox.messages.map((msg, index) => (
+            <div
+              key={msg._id}
+              className={`w-1/2 p-2 rounded 
+                ${msg.senderId === currentUser._id ? "self-end text-right" : "self-start text-left"}
+              `}
+  
+            >
+              <p>{msg.text}</p>
+              <span className="text-xs bg-yellow-300/25 p-1 rounded">
+      {formatDistanceToNow(new Date(msg.createdAt), { addSuffix: true })}
+       </span>
+            </div>
+          ))}
+
+         
+        </div>
+
+        {/* Input Bar */}
+        <form 
+        onSubmit={handleSubmit}
+        className="border-t-2 border-yellow-300/50 h-16 flex items-center justify-between">
+          <textarea
+            name="text"
+            placeholder="Type a message..."
+            className="flex-1 h-full border-none p-5 resize-none focus:outline-none"
+          ></textarea>
+          <button
+            type="submit"
+            className="w-32 h-full bg-yellow-300/50 border-none cursor-pointer"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+}
     </div>
   );
 };
 
 export default Chat;
+

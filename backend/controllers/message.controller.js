@@ -36,7 +36,7 @@ export const addMessage = async(req,res)=>{
         { 
            seenBy:[userId],
            lastMessage: text,
-           messages: message._id
+           $push: { messages: message._id }
         }, { new: true })
 
 

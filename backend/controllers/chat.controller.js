@@ -4,22 +4,47 @@ import { ApiError } from '../utils/api-error.js';
 import { ApiResponse } from '../utils/api-response.js';
 
 export const getChats = async(req,res)=>{
- 
+ const userId = req.user.id;
     try {
         
-        const chats = await Chat.find();
+        const chats = await Chat.find(
+            {
+            users: { $in: [userId] }
+            }
+    )
+    .populate("users", "username avatar")
+    .sort({ updatedAt: -1 });
 
-        if(!chats){
+        if(!chats || chats.length === 0){
             throw new ApiError(404,"no chat found")
         }
 
+        const formattedChats = chats.map((chat) => {
+            const receiver =
+              chat.users[0]._id.toString() === userId
+                ? chat.users[1]
+                : chat.users[0];
+      
+            return {
+              id: chat._id,
+              receiver, // contains { _id, username, avatar }
+              lastMessage: chat.lastMessage,
+              seenBy: chat.seenBy,
+              users:chat.users
+            };
+          });
+
         return res.status(200).json(
-            new ApiResponse(200,{message:"chats fetched successfully",data:chats})
+            new ApiResponse(200,{
+                message:"chats fetched successfully",
+                data:formattedChats})
         )
 
 
     } catch (error) {
-        throw new ApiError(500,"chats not found",error)
+        console.log(error);
+        
+        throw new ApiError(500,"chats not found",error.message)
     }
 }
 
