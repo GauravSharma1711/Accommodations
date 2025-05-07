@@ -32,6 +32,7 @@ const [password, setPassword] = React.useState("");
     setEmail("");
     setPassword("");
 
+
     updateUser(res.data.data.data)
   navigate('/')
 
