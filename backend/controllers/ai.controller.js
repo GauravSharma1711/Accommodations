@@ -15,8 +15,11 @@ export const aiController = async(req,res)=>{
 
    console.log("ans is :", ans);
 
-   return res.status(200).json("ans fetched successfully:",ans);
-   
+   return res.status(200).json({
+  message: "Answer fetched successfully",
+  data: ans
+});
+
 
   } catch (error) {
     console.log(error);
