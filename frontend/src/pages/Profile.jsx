@@ -69,7 +69,6 @@ fetchPost();
 
 
 
-  const data = listData;
   return (
     <div className='min-h-[calc(100vh-100px)] flex flex-col lg:flex-row gap-6 p-6 bg-gray-50'>
       {/* Left Side - User Information and My Listings */}

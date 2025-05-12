@@ -13,6 +13,7 @@ import postRoutes from './routes/post.routes.js'
 import testRoutes from './routes/test.route.js'
 import chatRoutes from './routes/chat.route.js'
 import messageRoutes from './routes/message.route.js'
+import aiRoutes from './routes/ai.route.js'
 
 import connectDB from './db/db.js';
 
@@ -39,6 +40,7 @@ app.use('/api/v1/post',postRoutes)
 app.use('/api/v1/test',testRoutes)
 app.use('/api/v1/chat',chatRoutes)
 app.use('/api/v1/message',messageRoutes)
+app.use('/api/v1/ai',aiRoutes)
 
 app.listen(PORT,()=>{
     connectDB();
