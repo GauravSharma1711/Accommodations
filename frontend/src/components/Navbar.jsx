@@ -22,10 +22,10 @@ const Navbar = () => {
         </a>
 
         <div className='hidden lg:flex space-x-4'>
-          <a href="" className='hover:text-gray-600'>Home</a>
+          <Link to={'/'} className='hover:text-gray-600'>Home</Link>
           <a href="" className='hover:text-gray-600'>About</a>
           <a href="" className='hover:text-gray-600'>Contact</a>
-          <a href="" className='hover:text-gray-600'>Agents</a>
+          <Link to={'/agent'} className='hover:text-gray-600'>Agents</Link>
         </div>
       </div>
 

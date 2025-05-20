@@ -12,7 +12,9 @@ import Profile from './pages/Profile'
 import PrivateRoute from './components/PrivateRoute'
 import ProfileUpdate from './pages/ProfileUpdate'
 import NewPostPage from './pages/NewPostPage'
-import { singlePageLoader } from './lib/loaders.js'
+import AiForm from './pages/AiForm'
+// import { singlePageLoader } from './lib/loaders.js'
+
 
 const App = () => {
   return (
@@ -39,6 +41,9 @@ const App = () => {
 <Route path="/updateProfile/:id" element={<ProfileUpdate />} />
 
 <Route path="/add" element={<NewPostPage />} />
+
+
+<Route path='/agent' element={<AiForm/>} />
 
       </Routes>
     </div>
