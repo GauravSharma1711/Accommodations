@@ -7,24 +7,30 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 
 
-export const aiController = async(req,res)=>{
-   try {
-    
-    const data = req.body.question
-   const ans  = await generate(data);
+export const aiController = async (req, res) => {
+  try {
+    const data = req.body.question;
+    let ans = await generate(data);
 
-   console.log("ans is :", ans);
+    console.log("raw ans is:", ans);
 
-   return res.status(200).json({
-  message: "Answer fetched successfully",
-  data: ans
-});
+    // Remove ```json and ``` from the string if present
+    ans = ans.replace(/```json\s*|\s*```/g, '');
 
+    // Parse the cleaned string to JSON
+    const parsedAns = JSON.parse(ans);
+
+    return res.status(200).json({
+      message: "Answer fetched successfully",
+      data: parsedAns
+    });
 
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
-}
+
 
 
 const generate = async(data)=>{
