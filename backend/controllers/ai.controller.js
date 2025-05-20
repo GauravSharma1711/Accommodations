@@ -9,8 +9,11 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 export const aiController = async (req, res) => {
   try {
-    const data = req.body.question;
-    let ans = await generate(data);
+    const city = req.body.city;
+
+    const prompt = `Provide the 3 best places to stay in ${city}. For each place, return a JSON object with the fields: name, latitude, longitude, description, and google_maps_url. Please respond **only** with a JSON array, without any additional text or formatting`
+
+    let ans = await generate(prompt);
 
     console.log("raw ans is:", ans);
 
