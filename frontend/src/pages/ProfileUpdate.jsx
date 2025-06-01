@@ -1,5 +1,6 @@
 import React, { useContext,useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import apiRequest from '../lib/apiRequest.js';
 import UploadWidget from '../components/UploadWidget.jsx';
@@ -11,7 +12,7 @@ const ProfileUpdate = () => {
 
     const [error,setError] = useState("");
 
-    const { id } = useParams();
+    // const { id } = useParams();
 
     const {currentUser, updateUser} = useContext(AuthContext);
 

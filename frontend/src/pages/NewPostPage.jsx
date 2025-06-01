@@ -50,7 +50,7 @@ try {
       },
     }
   )
- 
+ setError('')
   navigate('/'+res.data.data.data._id);
 } catch (error) {
   console.log(error);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Card = ({ item,id }) => {
+const Card = ({ item}) => {
   return (
     <div className='flex flex-col sm:flex-row gap-6 rounded-md mb-4 shadow-md overflow-hidden'>
       <div className='w-full sm:w-1/3'>

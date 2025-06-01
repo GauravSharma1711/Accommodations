@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { userData, listData } from '../lib/dummy.js';
+
 import Card from '../components/Card'; // Assuming you have a Card component
-import Chat from '../components/Chat.jsx';
+
 
 import apiRequest from '../lib/apiRequest.js';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Profile = () => {
   const [created , setCreated] = useState(null);
   const [saved , setSaved] = useState(null);
 
-  const [chats , setChats] = useState(null);
+  
 
   const navigate = useNavigate();
 
@@ -40,13 +40,7 @@ const Profile = () => {
          setSaved(savedPosts);
     }
 
-    const fetchChats = async ()=>{
-      const res = await apiRequest.get('/chat/getChats');
-       console.log("chats",res.data.data.data);
-       setChats(res.data.data.data)
-    }
-
-    fetchChats();
+  
 fetchPost();
   }, [currentUser,navigate])
   
@@ -147,7 +141,7 @@ fetchPost();
       <div className=' min-h-[calc(100vh-100px)]  w-full lg:w-1/3 bg-[rgb(252,245,243)] rounded-lg shadow-md p-6  
        overflow-hidden'>
 
-     <Chat chats={chats} />
+ 
        
       </div>
     </div>

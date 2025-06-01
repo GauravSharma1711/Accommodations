@@ -198,10 +198,10 @@ try {
         </div>
 
         <div className='mt-4 flex gap-3'>
-          <button className='flex-1 flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
+          {/* <button className='flex-1 flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-1'>
             <img src='/chat.png' alt='Chat' className='w-5 h-5' />
             Send a Message
-          </button>
+          </button> */}
           <button
           onClick={handleSave}
 

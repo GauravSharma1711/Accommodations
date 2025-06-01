@@ -22,9 +22,12 @@ const Navbar = () => {
         </a>
 
         <div className='hidden lg:flex space-x-4'>
-          <Link to={'/'} className='hover:text-gray-600'>Home</Link>
-          <a href="" className='hover:text-gray-600'>About</a>
-          <a href="" className='hover:text-gray-600'>Contact</a>
+        <Link to={'/'} className='hover:text-gray-600'>Home</Link>
+
+        <Link to={ currentUser ? '/users' : '/login' } className='hover:text-gray-600'>users</Link>
+
+          
+          
           <Link to={'/agent'} className='hover:text-gray-600'>Agents</Link>
         </div>
       </div>
@@ -43,9 +46,7 @@ const Navbar = () => {
   >
     Profile
   </Link>
-  <div className='absolute top-[-8px] right-[-8px] w-6 h-6 rounded-full text-white bg-red-600  flex items-center justify-center text-xs'>
-    3
-  </div>
+ 
 </div>
           </div>)
               :

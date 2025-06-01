@@ -13,7 +13,15 @@ import PrivateRoute from './components/PrivateRoute'
 import ProfileUpdate from './pages/ProfileUpdate'
 import NewPostPage from './pages/NewPostPage'
 import AiForm from './pages/AiForm'
+import Users from './pages/Users'
+import ChatPage from './pages/ChatPage'
 // import { singlePageLoader } from './lib/loaders.js'
+import Layout from './components/Layout'
+import NotificationsPage from './pages/NotificationsPage'
+
+import {Toaster} from 'react-hot-toast'
+
+import 'stream-chat-react/dist/css/v2/index.css'; 
 
 
 const App = () => {
@@ -45,7 +53,37 @@ const App = () => {
 
 <Route path='/agent' element={<AiForm/>} />
 
+{/* ------------ */}
+
+<Route
+ path='/users'
+  element={
+    <Layout showSidebar={true}>
+  <Users/>
+    </Layout>
+  } />
+
+
+ <Route
+          path="/notifications"
+          element={
+              <Layout showSidebar={true}>
+                <NotificationsPage />
+              </Layout>
+            
+          }
+        />
+
+<Route path='/chat/:id' 
+element={
+  <Layout showSidebar={false}>
+      <ChatPage/>
+    </Layout>
+} />
+
+
       </Routes>
+      <Toaster/>
     </div>
   )
 }

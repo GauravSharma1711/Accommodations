@@ -5,8 +5,6 @@ import { GoogleGenAI } from '@google/genai';
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-
-
 export const aiController = async (req, res) => {
   try {
     const city = req.body.city;

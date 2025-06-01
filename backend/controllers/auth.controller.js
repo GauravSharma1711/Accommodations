@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-error.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { upsertStreamUser } from "../utils/stream.js";
 dotenv.config();
 
 export const register = async (req, res) => {
@@ -23,6 +24,19 @@ export const register = async (req, res) => {
       email,
       password:hashedPassword
     });
+
+    //save user to stream
+  try {
+      await upsertStreamUser({
+        id:newUser._id,
+        name:newUser.username,
+        avatar:newUser.avatar || ""
+      })
+      console.log(`stream user created for ${newUser._id}`);
+      
+  } catch (error) {
+    console.log("error creating stream user",error);
+  }
 
     // Remove password from response
     newUser.password = undefined;

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { listData } from '../lib/dummy.js';
 import Filter from '../components/Filter.jsx';
 import Card from '../components/Card.jsx';
 import Map from '../components/Map.jsx';
