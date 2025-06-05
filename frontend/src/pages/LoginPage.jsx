@@ -26,7 +26,7 @@ const [password, setPassword] = React.useState("");
       email,password
     })
     
-    console.log(res);
+   
 
     
     setEmail("");
