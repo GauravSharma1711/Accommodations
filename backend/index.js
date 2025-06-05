@@ -7,7 +7,7 @@ dotenv.config();
 
 //routes
 import authRoutes from './routes/auth.routes.js'
-import  healthRoute  from './routes/healthcheck.route.js';
+
 import userRoutes from './routes/user.routes.js'
 import postRoutes from './routes/post.routes.js'
 import testRoutes from './routes/test.route.js'
@@ -36,7 +36,7 @@ const __dirname = path.resolve();
 
 
 app.use('/api/v1/auth',authRoutes);
-app.use('/api/v1/health',healthRoute);
+
 app.use('/api/v1/user',userRoutes);
 app.use('/api/v1/post',postRoutes)
 app.use('/api/v1/test',testRoutes)
