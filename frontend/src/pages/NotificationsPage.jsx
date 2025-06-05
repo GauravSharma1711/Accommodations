@@ -71,7 +71,12 @@ const acceptedRequests = friendRequests?.acceptedRequests || [];
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0 bg-gray-200 dark:bg-gray-700"> 
-                              <img src={request.sender.avatar} alt={request.sender.username} className="w-full h-full object-cover" />
+                              <img
+  src={request.sender?.avatar || '/default-avatar.png'}
+  alt={request.sender?.username || 'Unknown'}
+  className="w-full h-full object-cover"
+/>
+
                             </div>
                             <div>
                               <h3 className="font-semibold text-gray-900 dark:text-white">{request.sender.username}</h3>
@@ -113,11 +118,12 @@ const acceptedRequests = friendRequests?.acceptedRequests || [];
                       <div className="p-4">
                         <div className="flex items-start gap-3">
                           <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 mt-1"> 
-                            <img
-                              src={notification.recipient.avatar}
-                              alt={notification.recipient.username}
-                              className="w-full h-full object-cover"
-                            />
+                           <img
+  src={notification.recipient?.avatar || '/default-avatar.png'}
+  alt={notification.recipient?.username || 'Unknown'}
+  className="w-full h-full object-cover"
+/>
+
                           </div>
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900 dark:text-white">{notification.recipient.username}</h3>
