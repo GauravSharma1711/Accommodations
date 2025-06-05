@@ -14,11 +14,13 @@ import testRoutes from './routes/test.route.js'
 import chatRoutes from './routes/chat.route.js'
 import aiRoutes from './routes/ai.route.js'
 
-import connectDB from './db/db.js';
+import connectDB from './db/db.js';  
+
+import path from "path"
 
 const app = express();
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 
 
 app.use(cors({
@@ -30,6 +32,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 
+const __dirname = path.resolve();
 
 
 app.use('/api/v1/auth',authRoutes);
@@ -39,6 +42,15 @@ app.use('/api/v1/post',postRoutes)
 app.use('/api/v1/test',testRoutes)
 app.use('/api/v1/chat',chatRoutes)
 app.use('/api/v1/ai',aiRoutes)
+
+
+if(process.env.NODE_ENV.trim() === "production"){
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+  app.get("*",(req,res)=>{
+    res.sendFile(path.resolve(__dirname, "frontend", "dist" , "index.html"));
+  })
+}
 
 app.listen(PORT,()=>{
     connectDB();

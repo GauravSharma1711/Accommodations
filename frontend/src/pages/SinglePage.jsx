@@ -27,7 +27,7 @@ const SinglePage = () => {
         const res = await apiRequest.get(`/post/getPostById/${id}`);
         const postData = res.data.data.data;
         const savedFlag = res.data.data.isSaved;
-       console.log(savedFlag);
+       
        
         setPost(postData);
        
@@ -57,11 +57,11 @@ return
  }
 
 try {
-  const res = await apiRequest.post('/user/savePost',{
+  await apiRequest.post('/user/savePost',{
     postId:id
   })
   setIsSaved(prev => !prev);
-  console.log(res);
+ 
 } catch (error) {
   console.log(error);
  

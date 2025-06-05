@@ -17,7 +17,7 @@ const username = formData.get("username")
 const email = formData.get("email")
 const password = formData.get("password")
 
-console.log(username,email,password);
+
 
 try {
   const res = await apiRequest.post("/auth/register",{

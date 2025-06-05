@@ -43,7 +43,7 @@ const Users = () => {
     const getUsers = async()=>{
       try {
         const data = await getRecommendedUsers();
-        console.log("Recommended Users:", data);
+       
         setRecommendedUser(data || []);
       } catch (error) {
         console.error("error in getting recommended users",error)
