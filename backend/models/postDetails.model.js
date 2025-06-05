@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
-const { Schema, model } = mongoose;
 
-const PostDetailSchema = new Schema(
+
+const PostDetailSchema = new mongoose.Schema(
   {
     desc: {
       type: String,
@@ -54,6 +54,6 @@ const PostDetailSchema = new Schema(
   { timestamps: false }
 );
 
-const PostDetail = model('PostDetail', PostDetailSchema);
+const PostDetail = mongoose.model('PostDetail', PostDetailSchema);
 
 export default PostDetail;
