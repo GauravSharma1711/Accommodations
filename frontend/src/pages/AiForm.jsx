@@ -1,7 +1,9 @@
 import React from 'react'
-import axios from 'axios'
+
 import { useState } from 'react'
 import PlaceCard from '../components/PlaceCard'
+
+import apiRequest from "../lib/apiRequest.js";
 
 const AiForm = () => {
 
@@ -14,7 +16,7 @@ const AiForm = () => {
         setLoading(true);
 
         try {
-            const res = await axios.post('http://localhost:8000/api/v1/ai',{
+            const res = await apiRequest.post('/ai',{
                 city
             })
             setLoading(false);
