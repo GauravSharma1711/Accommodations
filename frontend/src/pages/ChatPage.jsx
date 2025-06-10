@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
+
 const ChatPage = () => {
 
  const { id: targetUserId } = useParams();
@@ -41,6 +42,8 @@ const ChatPage = () => {
           const tokenData = await getStreamToken()
          setToken(tokenData?.data?.token)
          console.log("td",tokenData?.data?.token);
+         console.log("STREAM_API_KEY in frontend:", STREAM_API_KEY);
+
          
       } catch (error) {
           console.error("error in getting token from stream",error)
