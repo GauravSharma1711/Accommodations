@@ -1,7 +1,7 @@
 import React ,{useContext}from 'react'
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getStreamToken } from "../lib/api";
+import { getStreamToken } from "../lib/api.js";
 
 import { AuthContext } from '../context/AuthContext';
 
