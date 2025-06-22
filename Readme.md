@@ -11,7 +11,7 @@ Find the best student stays near your desired location! 🧳🎒 This platform a
 ✅ **Interactive Map with React Leaflet** 🗺️  
 ✅ **Image Upload via Cloudinary** 🖼️  
 ✅ **Real-Time Chat with Stream API** 💬  
-✅ **Profile Update & Favorites Management** ⭐  
+✅ **Profile Update** ⭐  
 
 ---
 
