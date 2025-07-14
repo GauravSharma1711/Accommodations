@@ -30,10 +30,9 @@ const Profile = () => {
 
     const fetchPost = async ()=>{
       const res = await apiRequest.get(`/user/profilePost/${currentUser._id}`)
-      const userPosts = res.data.data.userPosts
-      const savedPosts = res.data.data.savedPosts
-      console.log(userPosts);
-      console.log(savedPosts);
+      const userPosts = res.data.data?.userPosts
+      const savedPosts = res.data.data?.savedPosts
+    
       
       
          setCreated(userPosts);
