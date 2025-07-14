@@ -21,11 +21,7 @@ export const getPosts = async (req, res) => {
 
     const posts = await Post.find(query).populate('postDetail');
 
-
-    if (!posts || posts.length === 0) {
-      return res.status(404).json({ success: false, message: "No posts found" });
-    }
-
+ 
     return res.status(200).json({ success: true, data: posts });
 
   } catch (error) {
@@ -99,7 +95,7 @@ export const getPostById = async(req,res)=>{
 }
 
 export const createPost = async (req, res) => {
-  const userId = req.user.id;
+  const userId = req.user?._id;
   try {
     console.log(req.body);
     

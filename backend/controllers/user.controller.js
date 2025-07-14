@@ -186,9 +186,9 @@ export const profilePost = async(req,res)=>{
             throw new ApiError(404,"User not found")
         }
       
-if ((!user.posts || user.posts.length === 0) && (!user.savedPosts || user.savedPosts.length === 0)) {
-            throw new ApiError(404, "No posts found for this user");
-        }
+// if ((!user.posts || user.posts.length === 0) && (!user.savedPosts || user.savedPosts.length === 0)) {
+//             throw new ApiError(404, "No posts found for this user");
+//         }
 
         return res.status(200).json(
             new ApiResponse(200,{userPosts:user.posts,savedPosts:user.savedPosts})
